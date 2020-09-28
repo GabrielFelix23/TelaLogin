@@ -1,6 +1,7 @@
 import React from 'react'
-import './styles.css'
+import '../Styles/styles.css'
 import {Link} from 'react-router-dom'
+import firebase from '../FirebaseConnection'
 
 import logo from './icon.png'
 
@@ -11,8 +12,28 @@ class Home extends React.Component{
       email: '',
       senha: ''
     }
+    this.logar = this.logar.bind(this)
+
+    firebase.auth().signOut()
   }
 
+  logar(e){
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.senha)
+    .then(() => {
+      alert("Usuario conectado!")
+      this.setState({
+        email: '',
+        senha: '',
+        confirmarSenha: ''
+      })
+    })
+    .catch((error) => {
+      if(error.code === 'auth/wrong-password'){
+        alert("Senha incorreto!")
+      }
+    })
+    e.preventDefault()
+  }
 
   render() {
     return (
@@ -25,7 +46,7 @@ class Home extends React.Component{
                     onChange={(e) => this.setState({email: e.target.value})}/><br/>
 
             <label>Senha: </label><br/>
-            <input type="text" placeholder="****" value={this.state.senha}
+            <input type="password" placeholder="****" value={this.state.senha}
                     onChange={(e) => this.setState({senha: e.target.value})}/><br/>
             
             <div className="containerButton">
