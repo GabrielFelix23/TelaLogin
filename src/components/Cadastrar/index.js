@@ -9,11 +9,21 @@ class Cadastrar extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      nome: '',
       email: '',
       senha: '',
       confirmarSenha: ''
     }
     this.cadastrar = this.cadastrar.bind(this)
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+        firebase.database().ref('usuarios').child(user.uid).set({
+          nome: this.state.nome
+        })
+      }
+    })
+
   }
 
   cadastrar(e){
@@ -47,9 +57,14 @@ class Cadastrar extends React.Component{
   render() {
     return (
       <div className="container">
-        <div className="containerForm">
+        <div className="containerFormCadastro">
           <img src={logo} className="logo"/>
+          
           <form onSubmit={this.cadastrar}>
+            <label>Nome: </label><br/>
+            <input type="text" placeholder="Email@gmail.com" value={this.state.nome}
+                    onChange={(e) => this.setState({nome: e.target.value})}/><br/>
+
             <label>Email: </label><br/>
             <input type="text" placeholder="Email@gmail.com" value={this.state.email}
                     onChange={(e) => this.setState({email: e.target.value})}/><br/>

@@ -10,23 +10,23 @@ class Home extends React.Component{
     super(props)
     this.state = {
       email: '',
-      senha: ''
+      senha: '',
+      user: null
     }
     this.logar = this.logar.bind(this)
 
     firebase.auth().signOut()
+
+    firebase.auth().onAuthStateChanged((user) => {
+      this.setState({
+        user: user
+      })
+    })
+
   }
 
   logar(e){
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.senha)
-    .then(() => {
-      alert("Usuario conectado!")
-      this.setState({
-        email: '',
-        senha: '',
-        confirmarSenha: ''
-      })
-    })
     .catch((error) => {
       if(error.code === 'auth/wrong-password'){
         alert("Senha incorreto!")
@@ -38,7 +38,11 @@ class Home extends React.Component{
   render() {
     return (
       <div className="container">
-        <div className="containerForm">
+        
+          {this.state.user ? 
+          <p>Olá</p>
+          :
+          <div className="containerForm">
           <img src={logo} className="logo"/>
           <form onSubmit={this.logar}>
             <label>Email: </label><br/>
@@ -55,6 +59,7 @@ class Home extends React.Component{
             </div>
           </form>
         </div>
+          }
       </div>
     );
   }
