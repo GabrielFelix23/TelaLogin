@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import firebase from '../FirebaseConnection'
 
 import logo from './icon.png'
+import Cadastro from '../Cadastrar'
 
 class Home extends React.Component{
   constructor(props){
@@ -40,7 +41,9 @@ class Home extends React.Component{
       <div className="container">
         
           {this.state.user ? 
-          <p>Olá</p>
+          <div>
+            <p>Logado com sucesso!</p>
+          </div>
           :
           <div className="containerForm">
           <img src={logo} className="logo"/>
