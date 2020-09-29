@@ -69,7 +69,7 @@ class Cadastrar extends React.Component{
                     onChange={(e) => this.setState({email: e.target.value})}/><br/>
 
             <label>Senha: </label><br/>
-            <input type="text" placeholder="****" value={this.state.senha}
+            <input type="password" placeholder="****" value={this.state.senha}
                     onChange={(e) => this.setState({senha: e.target.value})}/><br/>
 
             <label>Confirmar senha: </label><br/>

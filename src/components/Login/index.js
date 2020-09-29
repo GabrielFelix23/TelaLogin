@@ -4,26 +4,32 @@ import {Link} from 'react-router-dom'
 import firebase from '../FirebaseConnection'
 
 import logo from './icon.png'
-import Cadastro from '../Cadastrar'
 
 class Home extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      nome: null,
       email: '',
       senha: '',
       user: null
     }
     this.logar = this.logar.bind(this)
+    this.sair = this.sair.bind(this)
+    this.auth = this.auth.bind(this)
 
     firebase.auth().signOut()
+  }
+  componentDidMount(){
+    this.auth()
+  }
 
+  auth(){
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         user: user
       })
     })
-
   }
 
   logar(e){
@@ -36,13 +42,19 @@ class Home extends React.Component{
     e.preventDefault()
   }
 
+  sair(){
+    firebase.auth().signOut()
+  }
+
   render() {
     return (
       <div className="container">
         
           {this.state.user ? 
           <div>
+            <p>Olá {this.state.user.email}</p>
             <p>Logado com sucesso!</p>
+            <button type="submit" className="styleButton" onClick={this.sair}>Sair</button>
           </div>
           :
           <div className="containerForm">
